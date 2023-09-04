@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %green([%thread]) %boldMagenta(%logger:%line) - %cyan(%msg%n)</pattern>
+        </encoder>
+    </appender>
+
+    <root level="warn">
+        <appender-ref ref="console"/>
+    </root>
+
+    <logger name="com.code" level="trace" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+</configuration>

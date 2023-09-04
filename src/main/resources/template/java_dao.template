@@ -1,0 +1,13 @@
+package ${package}.dao;
+
+import com.danft.common.support.interfaces.IDao;
+import ${package}.model.entity.${entity_class};
+
+/**
+ * This is the class comment for the class {@link ${entity_class}Dao}.
+ *
+ * @author ${author}
+ * @since ${create_at}
+ */
+public interface ${entity_class}Dao extends IDao<${entity_class}, Long> {
+}

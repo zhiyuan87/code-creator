@@ -1,0 +1,25 @@
+package ${package}.dao.impl;
+
+import com.danft.common.support.base.BaseDao;
+import ${package}.dao.${entity_class}Dao;
+import ${package}.mapper.${entity_class}Mapper;
+import ${package}.model.entity.${entity_class};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+/**
+ * This is the class comment for the class {@link ${entity_class}DaoImpl}.
+ *
+ * @author ${author}
+ * @since ${create_at}
+ */
+@Repository
+public class ${entity_class}DaoImpl extends BaseDao<${entity_class}, Long> implements ${entity_class}Dao {
+    private final ${entity_class}Mapper ${entity_name}Mapper;
+
+    @Autowired
+    public ${entity_class}DaoImpl(${entity_class}Mapper ${entity_name}Mapper) {
+        super(${entity_name}Mapper);
+        this.${entity_name}Mapper = ${entity_name}Mapper;
+    }
+}

@@ -1,0 +1,13 @@
+package ${package}.mapper;
+
+import ${package}.model.entity.${entity_class};
+import com.danft.common.support.base.BaseMapper;
+
+/**
+ * This is the class comment for the class {@link ${entity_class}Mapper}.
+ *
+ * @author ${author}
+ * @since ${create_at}
+ */
+public interface ${entity_class}Mapper extends BaseMapper<${entity_class}, Long> {
+}

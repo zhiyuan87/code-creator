@@ -1,0 +1,25 @@
+package ${package}.model.entity;
+
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+${package_import}
+
+/**
+ * <pre>
+ * 	自动生成代码: 表名 ${table_name}
+ * 	${table_desc}
+ * </pre>
+ *
+ * @author ${author}
+ * @since ${create_at}
+ */
+@Data
+public class ${entity_class} implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = ${serial_id}L;
+
+	${fields}
+}

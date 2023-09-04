@@ -1,0 +1,25 @@
+package ${package}.service.impl;
+
+import ${package}.dao.${entity_class}Dao;
+import ${package}.model.entity.${entity_class};
+import ${package}.service.${entity_class}Service;
+import com.danft.common.support.base.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is the class comment for the class {@link ${entity_class}ServiceImpl}.
+ *
+ * @author ${author}
+ * @since ${create_at}
+ */
+@Service
+public class ${entity_class}ServiceImpl extends BaseService<${entity_class}, Long> implements ${entity_class}Service {
+    private final ${entity_class}Dao ${entity_name}Dao;
+
+    @Autowired
+    public ${entity_class}ServiceImpl(${entity_class}Dao ${entity_name}Dao) {
+        super(${entity_name}Dao);
+        this.${entity_name}Dao = ${entity_name}Dao;
+    }
+}
