@@ -21,12 +21,12 @@ public class DatabaseServiceImpl implements DatabaseService {
     private DatabaseDao databaseDao;
 
     @Override
-    public Map<String, String> findTableByDatabaseAndTable(String database, String table) {
-        return databaseDao.findTableByDatabaseAndTable(database, table);
+    public Map<String, String> getBy(String table, String database) {
+        return databaseDao.getBy(table, database);
     }
 
     @Override
-    public List<Map<String, String>> findColumnByDatabaseAndTable(String database, String table) {
-        return databaseDao.findColumnByDatabaseAndTable(database, table);
+    public List<Map<String, String>> listBy(String table, String database) {
+        return databaseDao.listBy(table, database);
     }
 }

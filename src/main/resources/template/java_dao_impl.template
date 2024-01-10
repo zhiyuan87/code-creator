@@ -1,9 +1,9 @@
-package ${package}.dao.impl;
+package ${packageName}.dao.impl;
 
-import com.danft.common.support.base.BaseDao;
-import ${package}.dao.${entity_class}Dao;
-import ${package}.mapper.${entity_class}Mapper;
-import ${package}.model.entity.${entity_class};
+import com.${project}.common.support.base.BaseDao;
+import ${packageName}.dao.${entity_class}Dao;
+import ${packageName}.mapper.${entity_class}Mapper;
+import ${packageName}.model.entity.${entity_class};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

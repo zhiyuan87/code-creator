@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.code.creator.mapper.DatabaseMapper">
-    <select id="findTableByDatabaseAndTable" resultType="java.util.HashMap">
+    <select id="getBy" resultType="java.util.HashMap">
         select *
         from information_schema.tables
-        where table_schema = #{database}
-          and table_name = #{table}
+        where table_name = #{table}
+          and table_schema = #{database}
         limit 0,1
     </select>
 
-    <select id="findColumnByDatabaseAndTable" resultType="java.util.HashMap">
+    <select id="listBy" resultType="java.util.HashMap">
         select *
         from information_schema.columns
-        where table_schema = #{database}
-          and table_name = #{table}
+        where table_name = #{table}
+          and table_schema = #{database}
         order by ordinal_position
     </select>
 </mapper>

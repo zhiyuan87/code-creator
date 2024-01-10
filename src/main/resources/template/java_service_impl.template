@@ -1,9 +1,9 @@
-package ${package}.service.impl;
+package ${packageName}.service.impl;
 
-import ${package}.dao.${entity_class}Dao;
-import ${package}.model.entity.${entity_class};
-import ${package}.service.${entity_class}Service;
-import com.danft.common.support.base.BaseService;
+import ${packageName}.dao.${entity_class}Dao;
+import ${packageName}.model.entity.${entity_class};
+import ${packageName}.service.${entity_class}Service;
+import com.${project}.common.support.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

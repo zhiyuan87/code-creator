@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${package}.mapper.${entity_class}Mapper">
+<mapper namespace="${packageName}.mapper.${entity_class}Mapper">
     <!-- 返回分页查询结果总记录数 -->
     <select id="getTotal" resultType="java.lang.Integer">
         select count(*)
@@ -8,7 +8,7 @@
     </select>
 
     <!-- 返回分页查询结果 -->
-    <select id="listResult" resultType="${package}.model.entity.${entity_class}">
+    <select id="listResult" resultType="${packageName}.model.entity.${entity_class}">
         select *
         from ${table_name}
         order by
@@ -21,20 +21,20 @@
     </select>
 
     <!-- 插入记录 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${package}.model.entity.${entity_class}">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${packageName}.model.entity.${entity_class}">
         insert into ${table_name} (${insert_mysql_field})
         values (${insert_mybatis_field})
     </insert>
 
     <!-- 更新记录 -->
-    <update id="update" parameterType="${package}.model.entity.${entity_class}">
+    <update id="update" parameterType="${packageName}.model.entity.${entity_class}">
         update ${table_name}
         set ${update_field}
         where id = #{id}
     </update>
 
     <!-- 根据id返回记录 -->
-    <select id="getById" resultType="${package}.model.entity.${entity_class}">
+    <select id="getById" resultType="${packageName}.model.entity.${entity_class}">
         select *
         from ${table_name}
         where id = #{id}

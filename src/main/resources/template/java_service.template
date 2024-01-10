@@ -1,7 +1,7 @@
-package ${package}.service;
+package ${packageName}.service;
 
-import com.danft.common.support.interfaces.IService;
-import ${package}.model.entity.${entity_class};
+import com.${project}.common.support.interfaces.IService;
+import ${packageName}.model.entity.${entity_class};
 
 /**
  * This is the class comment for the class {@link ${entity_class}Service}.

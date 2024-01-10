@@ -11,20 +11,20 @@ import java.util.Map;
  */
 public interface DatabaseService {
     /**
-     * 根据条件查询记录
+     * 查询表信息
      *
-     * @param database
      * @param table
+     * @param database
      * @return
      */
-    Map<String, String> findTableByDatabaseAndTable(String database, String table);
+    Map<String, String> getBy(String table, String database);
 
     /**
-     * 根据条件查询记录
+     * 查询列信息
      *
-     * @param database
      * @param table
+     * @param database
      * @return
      */
-    List<Map<String, String>> findColumnByDatabaseAndTable(String database, String table);
+    List<Map<String, String>> listBy(String table, String database);
 }

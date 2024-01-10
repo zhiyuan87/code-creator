@@ -1,7 +1,7 @@
-package ${package}.mapper;
+package ${packageName}.mapper;
 
-import ${package}.model.entity.${entity_class};
-import com.danft.common.support.base.BaseMapper;
+import ${packageName}.model.entity.${entity_class};
+import com.${project}.common.support.base.BaseMapper;
 
 /**
  * This is the class comment for the class {@link ${entity_class}Mapper}.

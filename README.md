@@ -1,3 +1,1 @@
-# code-creator
-
-代码生成器
+# code-creator - 代码生成器

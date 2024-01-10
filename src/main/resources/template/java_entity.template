@@ -1,15 +1,15 @@
-package ${package}.model.entity;
+package ${packageName}.model.entity;
 
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-${package_import}
+${import}
 
 /**
  * <pre>
  * 	自动生成代码: 表名 ${table_name}
- * 	${table_desc}
+ * 	${table_comment}
  * </pre>
  *
  * @author ${author}

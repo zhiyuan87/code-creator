@@ -21,12 +21,12 @@ public class DatabaseDaoImpl implements DatabaseDao {
     private DatabaseMapper databaseMapper;
 
     @Override
-    public Map<String, String> findTableByDatabaseAndTable(String database, String table) {
-        return databaseMapper.findTableByDatabaseAndTable(database, table);
+    public Map<String, String> getBy(String table, String database) {
+        return databaseMapper.getBy(table, database);
     }
 
     @Override
-    public List<Map<String, String>> findColumnByDatabaseAndTable(String database, String table) {
-        return databaseMapper.findColumnByDatabaseAndTable(database, table);
+    public List<Map<String, String>> listBy(String table, String database) {
+        return databaseMapper.listBy(table, database);
     }
 }
