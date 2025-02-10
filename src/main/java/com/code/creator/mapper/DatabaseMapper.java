@@ -1,5 +1,6 @@
 package com.code.creator.mapper;
 
+import com.code.creator.model.dto.TableColumnInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface DatabaseMapper {
      * @return
      */
     Map<String, String> getBy(String table, String database);
+
+    List<TableColumnInfoDTO> getPGTableInfo(String table, String database);
 
     /**
      * 查询列信息

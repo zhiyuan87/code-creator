@@ -5,15 +5,30 @@
         select *
         from information_schema.tables
         where table_name = #{table}
-          and table_schema = #{database}
-        limit 0,1
+          and table_catalog = #{database}
     </select>
 
     <select id="listBy" resultType="java.util.HashMap">
         select *
         from information_schema.columns
         where table_name = #{table}
-          and table_schema = #{database}
+          and table_catalog = #{database}
         order by ordinal_position
+    </select>
+
+    <select id="getPGTableInfo" resultType="com.code.creator.model.dto.TableColumnInfoDTO">
+        SELECT t.table_name,
+               obj_description(t.table_name::regclass)                     table_comment,
+               c.column_name,
+               col_description(t.table_name::regclass, c.ordinal_position) column_comment,
+               c.data_type,
+               c.is_nullable,
+               c.character_maximum_length
+        FROM information_schema.tables t
+                 right join information_schema.columns c on t.table_catalog = c.table_catalog and t.table_name = c.table_name
+        WHERE
+            t.table_catalog = #{database}
+        AND t.table_name = #{table}
+        ORDER BY c.ordinal_position;
     </select>
 </mapper>

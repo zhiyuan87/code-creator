@@ -2,6 +2,7 @@ package com.code.creator.dao.impl;
 
 import com.code.creator.dao.DatabaseDao;
 import com.code.creator.mapper.DatabaseMapper;
+import com.code.creator.model.dto.TableColumnInfoDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,11 @@ public class DatabaseDaoImpl implements DatabaseDao {
     @Override
     public Map<String, String> getBy(String table, String database) {
         return databaseMapper.getBy(table, database);
+    }
+
+    @Override
+    public List<TableColumnInfoDTO> getPGTableInfo(String table, String database) {
+        return databaseMapper.getPGTableInfo(table, database);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.code.creator.service.impl;
 
 import com.code.creator.dao.DatabaseDao;
+import com.code.creator.model.dto.TableColumnInfoDTO;
 import com.code.creator.service.DatabaseService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,17 @@ import java.util.Map;
  */
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
-
     @Resource
     private DatabaseDao databaseDao;
 
     @Override
     public Map<String, String> getBy(String table, String database) {
         return databaseDao.getBy(table, database);
+    }
+
+    @Override
+    public List<TableColumnInfoDTO> getPGTableInfo(String table, String database) {
+        return databaseDao.getPGTableInfo(table, database);
     }
 
     @Override

@@ -1,1 +1,16 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://repo.spring.io/milestone' }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'code-creator'

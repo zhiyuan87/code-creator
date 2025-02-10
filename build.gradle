@@ -1,87 +1,59 @@
-buildscript {
-    ext {
-        springBootVersion = '3.2.1'
-    }
+plugins {
+    id 'idea'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.0'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
 
-    repositories {
-        maven { url 'https://maven.aliyun.com/repository/public/' }
-        mavenLocal()
-        mavenCentral()
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_23
+    targetCompatibility = JavaVersion.VERSION_23
+}
 
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'src/main/java'
+        }
     }
 }
 
-allprojects {
-    apply plugin: 'idea'
-    apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+processResources {
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+}
 
-    repositories {
-        maven { url 'https://maven.aliyun.com/repository/public/' }
-        mavenLocal()
-        mavenCentral()
-    }
+dependencies {
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:+'
 
-    sourceSets {
-        main {
-            java {
-                srcDir 'src/main/java'
-            }
+    implementation 'com.google.code.gson:gson:+'
+    implementation 'org.apache.commons:commons-text:+'
+    implementation 'org.apache.commons:commons-lang3:+'
 
-            resources {
-                srcDir 'src/main/resources'
-                srcDir 'src/main/java'
-            }
-        }
-    }
+    runtimeOnly 'org.postgresql:postgresql:42.7.3'
+    runtimeOnly 'com.mysql:mysql-connector-j:8.2.0'
 
-    configurations {
-        developmentOnly
-        runtimeClasspath {
-            extendsFrom developmentOnly
-        }
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    dependencies {
-        implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
 
-        implementation group: 'com.google.code.gson', name: 'gson', version: '+'
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += "--enable-preview"
+}
 
-        implementation group: 'org.apache.commons', name: 'commons-lang3', version: '+'
+tasks.withType(Test).configureEach {
+    jvmArgs += "--enable-preview"
+}
 
-        runtimeOnly group: 'com.mysql', name: 'mysql-connector-j', version: '8.2.0'
-
-        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
-        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
-
-        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springBootVersion}"
-    }
-
-    processResources {
-        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.compilerArgs += "--enable-preview"
-    }
-
-    tasks.withType(Test).configureEach {
-        jvmArgs += "--enable-preview"
-    }
-
-    tasks.withType(JavaExec).tap {
-        configureEach {
-            jvmArgs += "--enable-preview"
-        }
-    }
+tasks.withType(JavaExec).configureEach {
+    jvmArgs += "--enable-preview"
 }
