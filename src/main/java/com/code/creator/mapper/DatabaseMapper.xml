@@ -17,13 +17,16 @@
     </select>
 
     <select id="getPGTableInfo" resultType="com.code.creator.model.dto.TableColumnInfoDTO">
-        SELECT t.table_name,
-               obj_description(t.table_name::regclass)                     table_comment,
-               c.column_name,
-               col_description(t.table_name::regclass, c.ordinal_position) column_comment,
-               c.data_type,
-               c.is_nullable,
-               c.character_maximum_length
+        SELECT t.table_name
+             , obj_description(t.table_name::regclass)                     table_comment
+             , c.column_name
+             , c.column_default
+             , col_description(t.table_name::regclass, c.ordinal_position) column_comment
+             , c.data_type
+             , c.is_nullable
+             , c.character_maximum_length
+             , c.numeric_precision
+             , c.numeric_scale
         FROM information_schema.tables t
                  right join information_schema.columns c on t.table_catalog = c.table_catalog and t.table_name = c.table_name
         WHERE

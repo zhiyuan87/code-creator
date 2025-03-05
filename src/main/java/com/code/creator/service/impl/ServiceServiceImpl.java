@@ -102,7 +102,7 @@ public class ServiceServiceImpl implements ServiceService {
                     .replace("{{serviceClassName}}", serviceClassName)
                     .replace("{{servicePackageName}}", creatorConfig.getTemplate().getService().getPackageName())
                     .replace("{{repositoryClassName}}", creatorConfig.repositoryClassName())
-                    .replace("{{repositoryFieldName}}", StringUtils.capitalize(creatorConfig.repositoryClassName()))
+                    .replace("{{repositoryFieldName}}", StringUtils.uncapitalize(creatorConfig.repositoryClassName()))
                     .replace("{{repositoryPackageName}}", creatorConfig.getTemplate().getRepository().getPackageName());
 
             log.debug("\n{}", template);

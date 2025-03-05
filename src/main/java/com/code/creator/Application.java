@@ -48,9 +48,9 @@ public class Application {
     @EventListener
     public void listen(ApplicationReadyEvent applicationReadyEvent) throws Exception {
         entityService.createJPAEntity();
-        serviceService.createJPAService();
-        serviceService.createJPAServiceImpl();
-        repositoryService.createJPARepository();
+//        serviceService.createJPAService();
+//        serviceService.createJPAServiceImpl();
+//        repositoryService.createJPARepository();
 
 //        parse2Dao();
 //        parse2Mapper();

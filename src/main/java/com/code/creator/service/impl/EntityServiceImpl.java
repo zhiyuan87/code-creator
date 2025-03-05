@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This is the class comment for the class {@link EntityServiceImpl}.
@@ -53,6 +53,81 @@ public class EntityServiceImpl implements EntityService {
         var tableColumnInfoList = databaseService.getPGTableInfo(creatorConfig.getTable(), creatorConfig.getDatabase());
         tableColumnInfoList.forEach(o -> log.debug("{}", new Gson().toJson(o)));
 
+        boolean hasBigDecimalField = false;
+        boolean hasInstantField = false;
+        boolean hasLocalDateField = false;
+
+        var fieldStringList = new ArrayList<String>();
+        for (var tableColumnInfo : tableColumnInfoList) {
+            var columnName = tableColumnInfo.getColumnName();
+            if (creatorConfig.getEntityIgnoreField().contains(columnName)) {
+                continue;
+            }
+            var fieldString = new StringBuilder();
+
+            var javaFieldType = tableColumnInfo.getDataType();
+            if (javaFieldType.equals("BigDecimal")) {
+                hasBigDecimalField = true;
+            } else if (javaFieldType.equals("Instant")) {
+                hasInstantField = true;
+            } else if (javaFieldType.equals("LocalDate")) {
+                hasLocalDateField = true;
+            }
+
+            // ADD @Comment
+            var columnComment = tableColumnInfo.getColumnComment();
+            if (StringUtils.isNotBlank(columnComment)) {
+                fieldString.append(String.format("\t@Comment(\"%s\")\n", columnComment));
+            }
+
+            // ADD @Column
+            fieldString.append("\t@Column(name = \"").append(columnName).append("\"");
+            if (tableColumnInfo.getIsNullable().equals("NO")) {
+                fieldString.append(", nullable = false");
+            }
+            if (javaFieldType.equals("String")) {
+                var characterMaximumLength = tableColumnInfo.getCharacterMaximumLength();
+                if (characterMaximumLength != null && characterMaximumLength != 255) {
+                    fieldString.append(", length = ").append(characterMaximumLength);
+                }
+            } else if (javaFieldType.equals("BigDecimal")) {
+                var numericPrecision = tableColumnInfo.getNumericPrecision();
+                if (numericPrecision != null && numericPrecision != 0) {
+                    fieldString.append(", precision = ").append(numericPrecision);
+                }
+                var numericScale = tableColumnInfo.getNumericScale();
+                if (numericScale != null && numericScale != 0) {
+                    fieldString.append(", scale = ").append(numericScale);
+                }
+            }
+            fieldString.append(")\n");
+
+            // ADD Field
+            fieldString.append(String.format("\tprivate %s %s", javaFieldType, tableColumnInfo.getJavaFieldName()));
+            var columnDefault = tableColumnInfo.getColumnDefault();
+            if (StringUtils.isNotBlank(columnDefault)) {
+                if (javaFieldType.equals("String")) {
+                    columnDefault = columnDefault.replace("::text", "").replace("::character varying", "").replace("'", "");
+                    if (StringUtils.isBlank(columnDefault)) {
+                        if (tableColumnInfo.getIsNullable().equals("YES")) {
+                            fieldString.append(" = \"\"");
+                        }
+                    } else {
+                        fieldString.append(" = ").append("\"").append(columnDefault).append("\"");
+                    }
+                } else if (javaFieldType.equals("Integer")) {
+                    fieldString.append(" = ").append(columnDefault);
+                } else if (javaFieldType.equals("Boolean")) {
+                    fieldString.append(" = ").append(columnDefault);
+                } else if (javaFieldType.equals("LocalDate") && columnDefault.equals("CURRENT_DATE")) {
+                    fieldString.append(" = LocalDate.now()");
+                }
+            }
+            fieldString.append(";\n");
+
+            fieldStringList.add(fieldString.toString());
+        }
+
         var template = new StringBuilder();
         template.append(String.format("package %s;\n\n", creatorConfig.getEntityPackage()));
         template.append(String.format("import %s.BaseEntity;\n", creatorConfig.getBaseEntityPackage()));
@@ -62,7 +137,17 @@ public class EntityServiceImpl implements EntityService {
         template.append("import lombok.Getter;\n");
         template.append("import lombok.Setter;\n");
         template.append("import org.hibernate.annotations.Comment;\n\n");
-        template.append("import java.io.Serial;\n\n");
+        template.append("import java.io.Serial;\n");
+        if (hasBigDecimalField) {
+            template.append("import java.math.BigDecimal;\n");
+        }
+        if (hasInstantField) {
+            template.append("import java.time.Instant;\n");
+        }
+        if (hasLocalDateField) {
+            template.append("import java.time.LocalDate;\n");
+        }
+        template.append("\n");
         template.append("@Getter\n");
         template.append("@Setter\n");
         template.append("@Entity\n");
@@ -71,33 +156,7 @@ public class EntityServiceImpl implements EntityService {
         template.append(String.format("public class %s extends BaseEntity {\n", tableColumnInfoList.getFirst().getJavaClassName()));
         template.append("\t@Serial\n");
         template.append(String.format("\tprivate static final long serialVersionUID = %sL;\n\n", UUID.randomUUID().getMostSignificantBits()));
-
-        // ADD Fields
-        var fieldString = tableColumnInfoList.parallelStream().filter(m -> creatorConfig.getEntityIgnoreField().stream().noneMatch(s -> s.equals(m.getColumnName()))).map(tableColumnInfo -> {
-            var fieldString1 = new StringBuilder();
-
-            // ADD @Comment
-            if (StringUtils.isNotBlank(tableColumnInfo.getColumnComment())) {
-                fieldString1.append(String.format("\t@Comment(\"%s\")\n", tableColumnInfo.getColumnComment()));
-            }
-
-            // ADD @Column
-            fieldString1.append("\t@Column(name = \"").append(tableColumnInfo.getColumnName()).append("\"");
-            if (tableColumnInfo.getIsNullable().equals("NO")) {
-                fieldString1.append(", nullable = false");
-            }
-            if (tableColumnInfo.getCharacterMaximumLength() != null) {
-                fieldString1.append(", length = ").append(tableColumnInfo.getCharacterMaximumLength());
-            }
-            fieldString1.append(")\n");
-
-            // ADD Field
-            fieldString1.append(String.format("\tprivate %s %s;\n", tableColumnInfo.getDataType(), tableColumnInfo.getJavaFieldName()));
-
-            return fieldString1.toString();
-        }).collect(Collectors.joining("\n"));
-        template.append(fieldString);
-
+        template.append(String.join("\n", fieldStringList));
         template.append("}\n");
         log.debug("\n{}", template);
 
