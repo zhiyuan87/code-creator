@@ -38,13 +38,13 @@ public class TableColumnInfoDTO implements Serializable {
 
     private String parse2JavaType(String dataType) {
         return switch (dataType) {
-            case "char", "varchar", "text", "character varying" -> String.class.getName();
+            case "char", "varchar", "text", "character varying", "uuid" -> String.class.getName();
             case "bigint" -> Long.class.getName();
             case "boolean" -> Boolean.class.getName();
             case "tinyint", "integer" -> Integer.class.getName();
             case "decimal", "numeric" -> BigDecimal.class.getName();
             case "timestamp" -> LocalDateTime.class.getName();
-            case "timestamp without time zone" -> Instant.class.getName();
+            case "timestamp without time zone", "timestamp with time zone" -> Instant.class.getName();
             case "date" -> LocalDate.class.getName();
             default -> Object.class.getName();
         };
