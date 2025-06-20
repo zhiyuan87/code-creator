@@ -108,10 +108,13 @@ public class EntityServiceImpl implements EntityService {
             if (StringUtils.isNotBlank(columnDefault)) {
                 if (javaFieldType.equals("String")) {
                     columnDefault = columnDefault.replace("::text", "").replace("::character varying", "").replace("'", "");
+
                     if (StringUtils.isBlank(columnDefault)) {
                         if (tableColumnInfo.getIsNullable().equals("YES")) {
                             fieldString.append(" = \"\"");
                         }
+                    } else if (columnDefault.equals("NULL")) {
+
                     } else {
                         fieldString.append(" = ").append("\"").append(columnDefault).append("\"");
                     }
