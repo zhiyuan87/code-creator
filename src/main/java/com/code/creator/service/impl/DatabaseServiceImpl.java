@@ -1,37 +1,33 @@
 package com.code.creator.service.impl;
 
 import com.code.creator.dao.DatabaseDao;
-import com.code.creator.model.dto.TableColumnInfoDTO;
+import com.code.creator.model.dto.ColumnDTO;
 import com.code.creator.service.DatabaseService;
-import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * This is the class comment for the class {@link DatabaseServiceImpl}.
+ * 数据库服务实现类（自动识别数据库类型）
  *
  * @author zhiyuan
- * @since 2023-08-18 10:30:00
+ * @since 2026-05-29 17:56:42
  */
 @Service
+@AllArgsConstructor
 public class DatabaseServiceImpl implements DatabaseService {
-    @Resource
-    private DatabaseDao databaseDao;
+
+    private final List<DatabaseDao> databaseDaoList;
+
 
     @Override
-    public Map<String, String> getBy(String table, String database) {
-        return databaseDao.getBy(table, database);
+    public String findTableComment(String table, String database) {
+        return databaseDaoList.getFirst().findTableComment(database, table);
     }
 
     @Override
-    public List<TableColumnInfoDTO> getPGTableInfo(String table, String database) {
-        return databaseDao.getPGTableInfo(table, database);
-    }
-
-    @Override
-    public List<Map<String, String>> listBy(String table, String database) {
-        return databaseDao.listBy(table, database);
+    public List<ColumnDTO> findTableColumns(String table, String database) {
+        return databaseDaoList.getFirst().findTableColumns(database, table);
     }
 }

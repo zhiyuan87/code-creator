@@ -1,34 +1,32 @@
 package com.code.creator.service;
 
-import com.code.creator.model.dto.TableColumnInfoDTO;
+import com.code.creator.model.dto.ColumnDTO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * This is the class comment for the class {@link DatabaseService}.
+ * 数据库服务接口
  *
  * @author zhiyuan
- * @since 2023-08-18 10:29:00
+ * @since 2026-05-29 17:56:42
  */
 public interface DatabaseService {
+    
     /**
-     * 查询表信息
+     * 查询表注释（自动识别数据库类型）
      *
-     * @param table
-     * @param database
-     * @return
+     * @param table 表名
+     * @param database 数据库名
+     * @return 表注释
      */
-    Map<String, String> getBy(String table, String database);
-
-    List<TableColumnInfoDTO> getPGTableInfo(String table, String database);
+    String findTableComment(String table, String database);
 
     /**
-     * 查询列信息
+     * 查询表列信息（自动识别数据库类型）
      *
-     * @param table
-     * @param database
-     * @return
+     * @param table 表名
+     * @param database 数据库名
+     * @return 列信息列表
      */
-    List<Map<String, String>> listBy(String table, String database);
+    List<ColumnDTO> findTableColumns(String table, String database);
 }

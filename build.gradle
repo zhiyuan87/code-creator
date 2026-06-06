@@ -6,54 +6,40 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_24
-    targetCompatibility = JavaVersion.VERSION_24
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-
-        resources {
-            srcDir 'src/main/resources'
-            srcDir 'src/main/java'
-        }
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
-
-processResources {
-    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.6'
+    }
 }
 
 dependencies {
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:+'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
 
-    implementation 'com.google.code.gson:gson:+'
-    implementation 'org.apache.commons:commons-text:+'
-    implementation 'org.apache.commons:commons-lang3:+'
+    implementation 'org.apache.commons:commons-text:1.15.0'
+    implementation 'org.apache.commons:commons-lang3:3.20.0'
 
     runtimeOnly 'org.postgresql:postgresql:42.7.3'
     runtimeOnly 'com.mysql:mysql-connector-j:8.2.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.38'
-    testCompileOnly 'org.projectlombok:lombok:1.18.38'
-    annotationProcessor 'org.projectlombok:lombok:1.18.38'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    compileOnly 'org.projectlombok:lombok:1.18.44'
+    testCompileOnly 'org.projectlombok:lombok:1.18.44'
+    annotationProcessor 'org.projectlombok:lombok:1.18.44'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.44'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs += "--enable-preview"
+tasks.processResources {
+    from('src/main/java') {
+        include '**/*.xml'
+    }
 }
 
 tasks.withType(Test).configureEach {
-    jvmArgs += "--enable-preview"
-}
-
-tasks.withType(JavaExec).configureEach {
-    jvmArgs += "--enable-preview"
+    useJUnitPlatform()
 }
