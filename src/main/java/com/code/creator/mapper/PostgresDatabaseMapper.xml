@@ -6,7 +6,7 @@
     <select id="findTableComment" resultType="string">
         SELECT obj_description(table_name::regclass)
         FROM information_schema.tables
-        WHERE table_catalog = #{database}
+        WHERE table_catalog = current_database()
           AND table_name = #{table}
     </select>
 
@@ -15,7 +15,7 @@
         SELECT *,
                col_description(table_name::regclass, ordinal_position) column_comment
         FROM information_schema.columns
-        WHERE table_catalog = #{database}
+        WHERE table_catalog = current_database()
           AND table_name = #{table}
         ORDER BY ordinal_position
     </select>

@@ -6,7 +6,7 @@
     <select id="findTableComment" resultType="string">
         SELECT TABLE_COMMENT
         FROM INFORMATION_SCHEMA.TABLES
-        WHERE TABLE_SCHEMA = #{database}
+        WHERE TABLE_SCHEMA = DATABASE()
           AND TABLE_NAME = #{table}
         LIMIT 1
     </select>
@@ -22,7 +22,7 @@
             COLUMN_DEFAULT,
             EXTRA
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = #{database}
+        WHERE TABLE_SCHEMA = DATABASE()
           AND TABLE_NAME = #{table}
         ORDER BY ORDINAL_POSITION
     </select>

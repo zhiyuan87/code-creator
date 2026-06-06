@@ -28,11 +28,6 @@ public class GeneratorContext {
     private String tableComment;
 
     /**
-     * 数据库名
-     */
-    private String databaseName;
-
-    /**
      * 列信息列表
      */
     private List<ColumnDTO> columns;

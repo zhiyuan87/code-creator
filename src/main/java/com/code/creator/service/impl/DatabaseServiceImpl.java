@@ -22,12 +22,12 @@ public class DatabaseServiceImpl implements DatabaseService {
 
 
     @Override
-    public String findTableComment(String table, String database) {
-        return databaseDaoList.getFirst().findTableComment(database, table);
+    public String findTableComment(String table) {
+        return databaseDaoList.getFirst().findTableComment(table);
     }
 
     @Override
-    public List<ColumnDTO> findTableColumns(String table, String database) {
-        return databaseDaoList.getFirst().findTableColumns(database, table);
+    public List<ColumnDTO> findTableColumns(String table) {
+        return databaseDaoList.getFirst().findTableColumns(table);
     }
 }

@@ -18,18 +18,16 @@ public interface PostgresDatabaseMapper {
     /**
      * 查询 PostgreSQL 表注释
      *
-     * @param database 数据库名（schema）
      * @param table 表名
      * @return 表注释
      */
-    String findTableComment(@Param("database") String database, @Param("table") String table);
+    String findTableComment(@Param("table") String table);
 
     /**
      * 查询 PostgreSQL 表列信息
      *
-     * @param database 数据库名（schema）
      * @param table 表名
      * @return 列信息列表（Map格式）
      */
-    List<Map<String, Object>> findTableColumns(@Param("database") String database, @Param("table") String table);
+    List<Map<String, Object>> findTableColumns(@Param("table") String table);
 }

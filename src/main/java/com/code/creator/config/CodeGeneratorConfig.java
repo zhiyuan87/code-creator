@@ -26,6 +26,7 @@ import org.springframework.context.event.EventListener;
 public class CodeGeneratorConfig {
 
     private final DatabaseService databaseService;
+    private final GeneratorConfig generatorConfig;
 
     @Lazy
     @Resource
@@ -36,40 +37,24 @@ public class CodeGeneratorConfig {
     private GeneratorFactory generatorFactory;
 
     @Bean
-    public GeneratorConfig buildConfig() {
-        var module = "domain";
-        return GeneratorConfig.builder()
-                .packageName("com.nuts.admin." + module + ".merchant")
-                .baseEntityPackage("com.nuts.admin.common.model.entity.base")
-                .baseServicePackage("com.nuts.admin.common.base")
-                .baseDaoPackage("com.nuts.admin.common.base")
-                .baseMapperPackage("com.nuts.admin.common.base")
-                .author("zhiyuan")
-                .moduleName("nuts-admin-" + module + "-service")
-                .build();
-    }
-
-    @Bean
     public GeneratorContext buildContext() {
-        var tableName = "t_merchant_wallet";
-        var databaseName = "db_nuts_dev";
+        var tableName = generatorConfig.getTableName();
 
-        var columns = databaseService.findTableColumns(databaseName, tableName);
+        var columns = databaseService.findTableColumns(tableName);
         if (columns.isEmpty()) {
             throw new IllegalArgumentException("No columns found for table: " + tableName);
         }
 
         String tableComment = null;
         try {
-            tableComment = databaseService.findTableComment(databaseName, tableName);
+            tableComment = databaseService.findTableComment(tableName);
         } catch (Exception e) {
-            log.warn("Failed to get table comment for {}.{}: {}", databaseName, tableName, e.getMessage());
+            log.warn("Failed to get table comment for {}: {}", tableName, e.getMessage());
         }
 
         return GeneratorContext.builder()
                 .tableName(tableName)
-                .databaseName(databaseName)
-                .config(buildConfig())
+                .config(generatorConfig)
                 .columns(columns)
                 .tableComment(tableComment)
                 .build();

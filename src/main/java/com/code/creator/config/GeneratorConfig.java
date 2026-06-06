@@ -1,7 +1,8 @@
 package com.code.creator.config;
 
-import lombok.Builder;
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * 代码生成配置
@@ -10,8 +11,14 @@ import lombok.Data;
  * @since 2026-05-29 17:56:42
  */
 @Data
-@Builder
+@Component
+@ConfigurationProperties(prefix = "code.generator")
 public class GeneratorConfig {
+    /**
+     * 表名
+     */
+    private String tableName;
+
     /**
      * 生成的包名
      */
@@ -44,7 +51,6 @@ public class GeneratorConfig {
 
     /**
      * 模块名称（用于自动生成 outputDirectory）
-     * 例如：pictostar
      */
     private String moduleName;
 

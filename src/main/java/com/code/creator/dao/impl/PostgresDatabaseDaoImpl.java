@@ -24,13 +24,13 @@ public class PostgresDatabaseDaoImpl extends DatabaseDao {
     private PostgresDatabaseMapper postgresDatabaseMapper;
 
     @Override
-    public String findTableComment(String database, String table) {
-        return postgresDatabaseMapper.findTableComment(table, database);
+    public String findTableComment(String table) {
+        return postgresDatabaseMapper.findTableComment(table);
     }
 
     @Override
-    protected List<Map<String, Object>> queryRawColumns(String database, String table) {
-        return postgresDatabaseMapper.findTableColumns(table, database);
+    protected List<Map<String, Object>> queryRawColumns(String table) {
+        return postgresDatabaseMapper.findTableColumns(table);
     }
 
     @Override

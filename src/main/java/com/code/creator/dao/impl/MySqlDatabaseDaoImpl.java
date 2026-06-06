@@ -24,13 +24,13 @@ public class MySqlDatabaseDaoImpl extends DatabaseDao {
     private MySqlDatabaseMapper mySqlDatabaseMapper;
 
     @Override
-    public String findTableComment(String database, String table) {
-        return mySqlDatabaseMapper.findTableComment(database, table);
+    public String findTableComment(String table) {
+        return mySqlDatabaseMapper.findTableComment(table);
     }
 
     @Override
-    protected List<Map<String, Object>> queryRawColumns(String database, String table) {
-        return mySqlDatabaseMapper.findTableColumns(database, table);
+    protected List<Map<String, Object>> queryRawColumns(String table) {
+        return mySqlDatabaseMapper.findTableColumns(table);
     }
 
     @Override

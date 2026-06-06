@@ -15,32 +15,29 @@ public abstract class DatabaseDao {
     /**
      * 查询表注释
      *
-     * @param database 数据库名
      * @param table    表名
      * @return 表注释
      */
-    public abstract String findTableComment(String database, String table);
+    public abstract String findTableComment(String table);
 
     /**
      * 查询表列信息
      *
-     * @param database 数据库名
      * @param table    表名
      * @return 列信息列表
      */
-    public List<ColumnDTO> findTableColumns(String database, String table) {
-        List<Map<String, Object>> rawColumns = queryRawColumns(database, table);
+    public List<ColumnDTO> findTableColumns(String table) {
+        List<Map<String, Object>> rawColumns = queryRawColumns(table);
         return convertToColumnDTO(rawColumns);
     }
 
     /**
      * 查询原始列数据（由子类实现）
      *
-     * @param database 数据库名
      * @param table    表名
      * @return 原始列数据列表
      */
-    protected abstract List<Map<String, Object>> queryRawColumns(String database, String table);
+    protected abstract List<Map<String, Object>> queryRawColumns(String table);
 
     /**
      * 将原始数据转换为 ColumnDTO（通用逻辑）

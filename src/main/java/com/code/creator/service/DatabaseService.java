@@ -16,17 +16,15 @@ public interface DatabaseService {
      * 查询表注释（自动识别数据库类型）
      *
      * @param table 表名
-     * @param database 数据库名
      * @return 表注释
      */
-    String findTableComment(String table, String database);
+    String findTableComment(String table);
 
     /**
      * 查询表列信息（自动识别数据库类型）
      *
      * @param table 表名
-     * @param database 数据库名
      * @return 列信息列表
      */
-    List<ColumnDTO> findTableColumns(String table, String database);
+    List<ColumnDTO> findTableColumns(String table);
 }
