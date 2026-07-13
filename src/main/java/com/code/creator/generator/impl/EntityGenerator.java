@@ -7,6 +7,7 @@ import com.code.creator.generator.GeneratorType;
 import com.code.creator.model.dto.ColumnDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -264,45 +265,10 @@ public class EntityGenerator extends AbstractCodeGenerator {
     }
 
     /**
-     * 将下划线命名转换为驼峰命名
-     *
-     * @param columnName 数据库字段名（如 user_name）
-     * @return Java 字段名（如 userName）
-     */
-    private String toFieldName(String columnName) {
-        if (columnName == null || columnName.isEmpty()) {
-            return "";
-        }
-
-        String[] parts = columnName.split("_");
-        StringBuilder fieldName = new StringBuilder();
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.isEmpty()) {
-                continue;
-            }
-            if (i == 0) {
-                // 第一部分小写
-                fieldName.append(part.toLowerCase());
-            } else {
-                // 后续部分首字母大写
-                fieldName.append(Character.toUpperCase(part.charAt(0)))
-                        .append(part.substring(1).toLowerCase());
-            }
-        }
-        return fieldName.toString();
-    }
-
-    /**
      * 判断实体类中是否应该忽略该字段
      * 默认忽略：
      */
     private boolean shouldIgnoreFieldInEntity(String columnName) {
-        return switch (columnName) {
-            case "id", "create_by", "create_name", "create_time",
-                 "update_by", "update_name", "update_time",
-                 "deleted", "version", "remark" -> true;
-            default -> false;
-        };
+        return Strings.CS.equalsAny(columnName, "id", "create_by", "create_name", "create_time", "update_by", "update_name", "update_time", "deleted", "version", "remark");
     }
 }

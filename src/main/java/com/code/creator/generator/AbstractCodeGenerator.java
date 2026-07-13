@@ -135,4 +135,28 @@ public abstract class AbstractCodeGenerator implements CodeGenerator {
         }
         return className.toString();
     }
+
+    /**
+     * 将数据库字段名转换为 Java 字段名（下划线转小驼峰）。
+     */
+    protected String toFieldName(String columnName) {
+        if (columnName == null || columnName.isEmpty()) {
+            return "";
+        }
+
+        String[] parts = columnName.split("_");
+        StringBuilder fieldName = new StringBuilder();
+        for (String part : parts) {
+            if (part.isEmpty()) {
+                continue;
+            }
+            if (fieldName.isEmpty()) {
+                fieldName.append(part.toLowerCase());
+            } else {
+                fieldName.append(Character.toUpperCase(part.charAt(0)))
+                        .append(part.substring(1).toLowerCase());
+            }
+        }
+        return fieldName.toString();
+    }
 }
