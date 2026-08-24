@@ -32,9 +32,9 @@ public class ColumnDTO implements Serializable {
     private String columnComment;
 
     /**
-     * 是否可空（YES/NO）
+     * 是否可空
      */
-    private String isNullable;
+    private Boolean nullable;
 
     /**
      * 默认值

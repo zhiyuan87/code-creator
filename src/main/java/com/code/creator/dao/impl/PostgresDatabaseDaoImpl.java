@@ -4,6 +4,7 @@ import com.code.creator.dao.DatabaseDao;
 import com.code.creator.mapper.PostgresDatabaseMapper;
 import com.code.creator.model.dto.ColumnDTO;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  * @author zhiyuan
  * @since 2026-05-29 17:56:42
  */
+@Slf4j
 @Repository
 @ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "org.postgresql.Driver")
 public class PostgresDatabaseDaoImpl extends DatabaseDao {
@@ -39,7 +41,7 @@ public class PostgresDatabaseDaoImpl extends DatabaseDao {
         columnDTO.setColumnName(getString(resultMap, "column_name"));
         columnDTO.setDataType(convertDataType(getString(resultMap, "data_type")));
         columnDTO.setColumnComment(getString(resultMap, "column_comment"));
-        columnDTO.setIsNullable("YES".equalsIgnoreCase(getString(resultMap, "is_nullable")) ? "1" : "0");
+        columnDTO.setNullable("YES".equalsIgnoreCase(getString(resultMap, "is_nullable")));
         columnDTO.setColumnDefault(getString(resultMap, "column_default"));
         return columnDTO;
     }

@@ -222,7 +222,7 @@ public class EntityGenerator extends AbstractCodeGenerator {
                         .replace("'", "");
 
                 if (StringUtils.isBlank(defaultValue)) {
-                    if ("YES".equalsIgnoreCase(column.getIsNullable())) {
+                    if (!column.getNullable()) {
                         fieldString.append(" = \"\"");
                     }
                 } else if (defaultValue.equals("NULL")) {

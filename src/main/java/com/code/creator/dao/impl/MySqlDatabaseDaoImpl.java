@@ -39,7 +39,7 @@ public class MySqlDatabaseDaoImpl extends DatabaseDao {
         columnDTO.setColumnName(getString(resultMap, "COLUMN_NAME"));
         columnDTO.setDataType(convertDataType(getString(resultMap, "DATA_TYPE")));
         columnDTO.setColumnComment(getString(resultMap, "COLUMN_COMMENT"));
-        columnDTO.setIsNullable(getString(resultMap, "IS_NULLABLE"));
+        columnDTO.setNullable("YES".equalsIgnoreCase(getString(resultMap, "is_nullable")));
         columnDTO.setColumnDefault(getString(resultMap, "COLUMN_DEFAULT"));
         return columnDTO;
     }
