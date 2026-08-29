@@ -234,7 +234,7 @@ public class EntityGenerator extends AbstractCodeGenerator {
             } else if (javaFieldType.equals("Integer")) {
                 fieldString.append(" = ").append(defaultValue);
             } else if (javaFieldType.equals("Long")) {
-                fieldString.append(" = ").append(defaultValue);
+                fieldString.append(" = ").append(defaultValue).append("L");
             } else if (javaFieldType.equals("Boolean")) {
                 // 处理 Boolean 类型的默认值
                 String boolValue = defaultValue.toLowerCase()
