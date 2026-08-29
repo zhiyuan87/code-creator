@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -245,7 +246,11 @@ public class EntityGenerator extends AbstractCodeGenerator {
                     fieldString.append(" = false");
                 }
             } else if (javaFieldType.equals("BigDecimal")) {
-                fieldString.append(" = new BigDecimal(\"").append(defaultValue).append("\")");
+                if (Objects.equals(defaultValue, "0")) {
+                    fieldString.append(" = BigDecimal.ZERO");
+                } else {
+                    fieldString.append(" = new BigDecimal(\"").append(defaultValue).append("\")");
+                }
             } else if (javaFieldType.equals("LocalDate") && defaultValue.equals("CURRENT_DATE")) {
                 fieldString.append(" = LocalDate.now()");
             } else if (javaFieldType.equals("LocalDateTime") && defaultValue.equals("CURRENT_TIMESTAMP")) {
