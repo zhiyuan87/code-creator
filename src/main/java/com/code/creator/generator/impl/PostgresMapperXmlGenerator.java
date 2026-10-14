@@ -1,6 +1,7 @@
 package com.code.creator.generator.impl;
 
 import com.code.creator.generator.GeneratorType;
+import com.code.creator.model.dto.ColumnDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -35,5 +36,14 @@ public class PostgresMapperXmlGenerator extends MapperXmlGenerator {
             log.error("Error checking PostgreSQL database type", e);
             return false;
         }
+    }
+
+    @Override
+    protected String buildParameterExpression(ColumnDTO column) {
+        String parameterExpression = super.buildParameterExpression(column);
+        if ("JSON".equalsIgnoreCase(column.getDataType())) {
+            return "CAST(" + parameterExpression + " AS JSONB)";
+        }
+        return parameterExpression;
     }
 }

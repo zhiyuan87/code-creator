@@ -120,9 +120,8 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
     private String buildInsertStatement(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
         String className = toClassName(context.getTableName());
-        List<String> insertColumns = context.getColumns().stream()
-                .map(ColumnDTO::getColumnName)
-                .filter(this::shouldIncludeFieldInInsert)
+        List<ColumnDTO> insertColumns = context.getColumns().stream()
+                .filter(column -> shouldIncludeFieldInInsert(column.getColumnName()))
                 .toList();
 
         StringBuilder sb = new StringBuilder();
@@ -143,22 +142,22 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
         return sb.toString();
     }
 
-    private void appendInsertColumns(StringBuilder sb, List<String> columns, String indent) {
+    private void appendInsertColumns(StringBuilder sb, List<ColumnDTO> columns, String indent) {
         for (int i = 0; i < columns.size(); i++) {
             if (i > 0) {
                 sb.append("\n").append(indent);
             }
-            sb.append(columns.get(i));
+            sb.append(columns.get(i).getColumnName());
             sb.append(i < columns.size() - 1 ? "," : ")");
         }
     }
 
-    private void appendInsertValues(StringBuilder sb, List<String> columns) {
+    private void appendInsertValues(StringBuilder sb, List<ColumnDTO> columns) {
         for (int i = 0; i < columns.size(); i++) {
             if (i > 0) {
                 sb.append("\n                ");
             }
-            sb.append("#{").append(toFieldName(columns.get(i))).append("}");
+            sb.append(buildParameterExpression(columns.get(i)));
             sb.append(i < columns.size() - 1 ? "," : ")");
         }
     }
@@ -166,12 +165,14 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
     private String buildUpdateStatement(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
         String className = toClassName(context.getTableName());
-        List<String> updateColumns = context.getColumns().stream()
-                .map(ColumnDTO::getColumnName)
-                .filter(this::shouldIncludeFieldInUpdate)
+        List<ColumnDTO> updateColumns = context.getColumns().stream()
+                .filter(column -> shouldIncludeFieldInUpdate(column.getColumnName()))
                 .toList();
-        boolean hasVersionColumn = updateColumns.contains("version");
+        boolean hasVersionColumn = updateColumns.stream()
+                .map(ColumnDTO::getColumnName)
+                .anyMatch("version"::equals);
         int maxColLength = updateColumns.stream()
+                .map(ColumnDTO::getColumnName)
                 .map(String::length)
                 .max(Comparator.naturalOrder())
                 .orElse(0);
@@ -185,16 +186,17 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
         sb.append("        SET ");
 
         for (int i = 0; i < updateColumns.size(); i++) {
-            String column = updateColumns.get(i);
+            ColumnDTO column = updateColumns.get(i);
+            String columnName = column.getColumnName();
             if (i > 0) {
                 sb.append("\n            ");
             }
-            sb.append(column);
-            sb.append(" ".repeat(maxColLength - column.length()));
-            if ("version".equals(column)) {
+            sb.append(columnName);
+            sb.append(" ".repeat(maxColLength - columnName.length()));
+            if ("version".equals(columnName)) {
                 sb.append(" = version + 1");
             } else {
-                sb.append(" = #{").append(toFieldName(column)).append("}");
+                sb.append(" = ").append(buildParameterExpression(column));
             }
             if (i < updateColumns.size() - 1) {
                 sb.append(",");
@@ -208,6 +210,13 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
         }
         sb.append("    </update>\n");
         return sb.toString();
+    }
+
+    /**
+     * 构建 MyBatis 参数表达式，数据库子类可按字段类型追加类型转换。
+     */
+    protected String buildParameterExpression(ColumnDTO column) {
+        return "#{" + toFieldName(column.getColumnName()) + "}";
     }
 
     private String buildGetByIdSelect(GeneratorContext context) {
