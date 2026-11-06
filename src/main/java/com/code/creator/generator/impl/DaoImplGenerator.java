@@ -62,7 +62,7 @@ public class DaoImplGenerator extends AbstractCodeGenerator {
     private String buildImports(GeneratorContext context) {
         StringBuilder imports = new StringBuilder();
 
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String basePackage = context.getConfig().getPackageName();
 
         // Mapper 导入
@@ -103,7 +103,7 @@ public class DaoImplGenerator extends AbstractCodeGenerator {
      * 构建实现类声明
      */
     private String buildImplementationClass(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String implName = className + "DaoImpl";
         String entityName = Character.toLowerCase(className.charAt(0)) + className.substring(1);
 

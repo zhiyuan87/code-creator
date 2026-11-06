@@ -63,7 +63,7 @@ public class DaoGenerator extends AbstractCodeGenerator {
         StringBuilder imports = new StringBuilder();
 
         String entityPackage = context.getConfig().getPackageName() + ".model.entity";
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         imports.append(String.format("import %s.%s;\n", entityPackage, className));
 
         // IDao 导入（使用配置中的 baseDaoPackage 或默认路径）
@@ -91,7 +91,7 @@ public class DaoGenerator extends AbstractCodeGenerator {
      * 构建接口声明
      */
     private String buildInterfaceDeclaration(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String daoName = className + "Dao";
 
         StringBuilder declaration = new StringBuilder();

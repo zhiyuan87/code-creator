@@ -46,7 +46,7 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
     }
 
     private String buildMapperElement(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String mapperName = className + "Mapper";
         String mapperPackage = context.getConfig().getPackageName() + ".mapper";
 
@@ -88,7 +88,7 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
 
     private String buildListResultSelect(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -119,7 +119,7 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
 
     private String buildInsertStatement(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         List<ColumnDTO> insertColumns = context.getColumns().stream()
                 .filter(column -> shouldIncludeFieldInInsert(column.getColumnName()))
                 .toList();
@@ -164,7 +164,7 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
 
     private String buildUpdateStatement(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         List<ColumnDTO> updateColumns = context.getColumns().stream()
                 .filter(column -> shouldIncludeFieldInUpdate(column.getColumnName()))
                 .toList();
@@ -221,7 +221,7 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
 
     private String buildGetByIdSelect(GeneratorContext context) {
         String entityPackage = getEntityPackage(context);
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n");

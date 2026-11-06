@@ -64,7 +64,7 @@ public class ServiceGenerator extends AbstractCodeGenerator {
 
         String basePackage = context.getConfig().getPackageName();
         String entityPackage = basePackage + ".model.entity";
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
 
         // Entity 导入
         imports.append(String.format("import %s.%s;\n", entityPackage, className));
@@ -115,7 +115,7 @@ public class ServiceGenerator extends AbstractCodeGenerator {
      * 构建接口声明
      */
     private String buildInterfaceDeclaration(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String interfaceName = className + "Service";
 
         StringBuilder declaration = new StringBuilder();

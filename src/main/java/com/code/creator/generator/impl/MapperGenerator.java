@@ -66,7 +66,7 @@ public class MapperGenerator extends AbstractCodeGenerator {
         GeneratorConfig config = context.getConfig();
 
         String entityPackage = context.getConfig().getPackageName() + ".model.entity";
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         imports.append(String.format("import %s.%s;\n", entityPackage, className));
 
         // BaseMapper 导入（使用配置中的 baseMapperPackage）
@@ -95,7 +95,7 @@ public class MapperGenerator extends AbstractCodeGenerator {
      * 构建接口声明
      */
     private String buildInterfaceDeclaration(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String interfaceName = className + "Mapper";
 
         StringBuilder declaration = new StringBuilder();

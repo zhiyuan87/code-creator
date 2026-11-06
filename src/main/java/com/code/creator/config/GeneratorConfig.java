@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * 代码生成配置
  *
@@ -18,6 +20,11 @@ public class GeneratorConfig {
      * 表名
      */
     private String tableName;
+
+    /**
+     * 生成类名时需要移除的表名前缀，按最长前缀优先匹配
+     */
+    private List<String> tablePrefixes = List.of("t_");
 
     /**
      * 生成的包名

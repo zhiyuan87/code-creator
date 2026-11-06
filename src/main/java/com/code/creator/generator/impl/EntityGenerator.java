@@ -150,7 +150,7 @@ public class EntityGenerator extends AbstractCodeGenerator {
      * 构建类声明
      */
     private String buildClassDeclaration(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
 
         StringBuilder declaration = new StringBuilder();
 

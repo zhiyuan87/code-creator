@@ -2,6 +2,8 @@ package com.code.creator.generator;
 
 import com.code.creator.exception.CodeGeneratorException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -9,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 代码生成器抽象基类
@@ -71,7 +75,7 @@ public abstract class AbstractCodeGenerator implements CodeGenerator {
      */
     private String buildOutputPath(GeneratorContext context) {
         String baseDir = resolveBaseOutputDir(context);
-        String className = toClassName(context.getTableName()) + getClassNameSuffix();
+        String className = toClassName(context) + getClassNameSuffix();
         return Paths.get(baseDir, getSubDir(), className + getFileExtension()).toString();
     }
 
@@ -119,12 +123,13 @@ public abstract class AbstractCodeGenerator implements CodeGenerator {
 
     /**
      * 转换表名为类名（下划线转驼峰）
-     * 自动去除 t_ 前缀
      */
-    protected String toClassName(String tableName) {
-        if (tableName != null && tableName.toLowerCase().startsWith("t_")) {
-            tableName = tableName.substring(2);
+    protected String toClassName(GeneratorContext context) {
+        String tableName = removeTablePrefix(context.getTableName(), context.getConfig().getTablePrefixes());
+        if (StringUtils.isBlank(tableName)) {
+            return "";
         }
+
         String[] parts = tableName.split("_");
         StringBuilder className = new StringBuilder();
         for (String part : parts) {
@@ -134,6 +139,20 @@ public abstract class AbstractCodeGenerator implements CodeGenerator {
             }
         }
         return className.toString();
+    }
+
+    private String removeTablePrefix(String tableName, List<String> prefixes) {
+        if (StringUtils.isBlank(tableName) || prefixes == null || prefixes.isEmpty()) {
+            return tableName;
+        }
+
+        return prefixes.stream()
+                .filter(StringUtils::isNotBlank)
+                .sorted(Comparator.comparingInt(String::length).reversed())
+                .filter(prefix -> Strings.CI.startsWith(tableName, prefix))
+                .findFirst()
+                .map(prefix -> tableName.substring(prefix.length()))
+                .orElse(tableName);
     }
 
     /**

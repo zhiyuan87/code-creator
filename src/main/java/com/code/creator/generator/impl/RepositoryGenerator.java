@@ -57,7 +57,7 @@ public class RepositoryGenerator extends AbstractCodeGenerator {
         StringBuilder imports = new StringBuilder();
 
         String entityPackage = context.getConfig().getPackageName() + ".model.entity";
-        imports.append(String.format("import %s.%s;\n", entityPackage, toClassName(context.getTableName())));
+        imports.append(String.format("import %s.%s;\n", entityPackage, toClassName(context)));
         imports.append("import org.springframework.data.jpa.repository.JpaRepository;\n");
         imports.append("import org.springframework.stereotype.Repository;\n");
         imports.append("\n");
@@ -66,7 +66,7 @@ public class RepositoryGenerator extends AbstractCodeGenerator {
     }
 
     private String buildInterfaceDeclaration(GeneratorContext context) {
-        String className = toClassName(context.getTableName());
+        String className = toClassName(context);
         String interfaceName = className + "Repository";
 
         StringBuilder declaration = new StringBuilder();
