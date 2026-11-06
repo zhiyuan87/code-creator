@@ -32,5 +32,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### Local development config ###
-**/application-dev.properties
+### Custom ###
+application-*.properties
