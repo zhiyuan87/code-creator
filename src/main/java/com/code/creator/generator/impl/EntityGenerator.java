@@ -274,6 +274,6 @@ public class EntityGenerator extends AbstractCodeGenerator {
      * 默认忽略：
      */
     private boolean shouldIgnoreFieldInEntity(String columnName) {
-        return Strings.CS.equalsAny(columnName, "id", "create_by", "create_name", "create_time", "update_by", "update_name", "update_time", "deleted", "version", "remark");
+        return Strings.CS.equalsAny(columnName, "id", "create_by", "create_name", "create_time", "update_by", "update_name", "update_time", "version", "remark");
     }
 }
