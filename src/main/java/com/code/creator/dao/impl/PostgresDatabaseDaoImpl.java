@@ -39,11 +39,31 @@ public class PostgresDatabaseDaoImpl extends DatabaseDao {
     protected ColumnDTO convertMapToColumnDTO(Map<String, Object> resultMap) {
         var columnDTO = new ColumnDTO();
         columnDTO.setColumnName(getString(resultMap, "column_name"));
-        columnDTO.setDataType(convertDataType(getString(resultMap, "data_type")));
+        columnDTO.setDataType(convertDataType(
+                getString(resultMap, "data_type"),
+                getString(resultMap, "udt_name")
+        ));
         columnDTO.setColumnComment(getString(resultMap, "column_comment"));
         columnDTO.setNullable("YES".equalsIgnoreCase(getString(resultMap, "is_nullable")));
         columnDTO.setColumnDefault(getString(resultMap, "column_default"));
         return columnDTO;
+    }
+
+    /**
+     * PostgreSQL 在 information_schema.columns 中统一使用 ARRAY 表示数组，
+     * 具体元素类型由 udt_name 标识。
+     */
+    private String convertDataType(String dataType, String udtName) {
+        if ("ARRAY".equalsIgnoreCase(dataType)) {
+            return switch (udtName == null ? "" : udtName.toLowerCase()) {
+                case "_int4" -> "INTEGER[]";
+                case "_int8" -> "BIGINT[]";
+                case "_varchar" -> "VARCHAR[]";
+                default -> "VARCHAR";
+            };
+        }
+
+        return convertDataType(dataType);
     }
 
     @Override
@@ -54,10 +74,13 @@ public class PostgresDatabaseDaoImpl extends DatabaseDao {
 
         return switch (dataType.toLowerCase()) {
             case "bigint", "bigserial" -> "BIGINT";
+            case "bigint[]" -> "BIGINT[]";
             case "integer", "int", "serial" -> "INTEGER";
+            case "integer[]", "int[]" -> "INTEGER[]";
             case "smallint", "smallserial" -> "SMALLINT";
             case "boolean" -> "BOOLEAN";
             case "character varying", "varchar" -> "VARCHAR";
+            case "character varying[]", "varchar[]" -> "VARCHAR[]";
             case "character", "char" -> "CHAR";
             case "text" -> "TEXT";
             case "timestamp without time zone", "timestamp" -> "TIMESTAMP";

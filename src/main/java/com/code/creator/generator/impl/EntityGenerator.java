@@ -75,7 +75,9 @@ public class EntityGenerator extends AbstractCodeGenerator {
 
             // 数值类型
             case "BIGINT" -> "Long";
+            case "BIGINT[]" -> "Long[]";
             case "INTEGER" -> "Integer";
+            case "INTEGER[]" -> "Integer[]";
             case "SMALLINT" -> "Short";
             case "TINYINT" -> "Byte";
             case "DECIMAL", "NUMERIC" -> "BigDecimal";
@@ -95,6 +97,9 @@ public class EntityGenerator extends AbstractCodeGenerator {
 
             // JSON 类型
             case "JSON" -> "String";
+
+            // 数组类型
+            case "VARCHAR[]" -> "String[]";
 
             // 默认
             default -> "String";
