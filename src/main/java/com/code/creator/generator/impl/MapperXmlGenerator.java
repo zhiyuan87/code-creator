@@ -253,11 +253,13 @@ public abstract class MapperXmlGenerator extends AbstractCodeGenerator {
     }
 
     private boolean shouldIncludeFieldInInsert(String columnName) {
-        return !Strings.CS.equalsAny(columnName, "id", "update_by", "update_name", "update_time", "deleted", "deleted_id", "deleted_time");
+        return !Strings.CS.equalsAny(columnName,
+                "id", "update_by", "update_name", "update_time",
+                "deleted", "delete_by", "delete_name", "delete_time", "deleted_id", "deleted_time");
     }
 
     private boolean shouldIncludeFieldInUpdate(String columnName) {
-        return !Strings.CS.equalsAny(columnName, "id", "create_by", "create_name", "create_time", "deleted", "deleted_id", "deleted_time");
+        return !Strings.CS.equalsAny(columnName, "id", "create_by", "create_name", "create_time");
     }
 
     private String getEntityPackage(GeneratorContext context) {
